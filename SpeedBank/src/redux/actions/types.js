@@ -1,0 +1,6 @@
+module.exports = {
+  AUTH_USER: 'AUTH_USER',
+  AUTH_ERROR: 'AUTH_ERROR',
+  AUTH_REQUEST: 'AUTH_REQUEST',
+  UNAUTH_USER: 'UNAUTH_USER',
+};
