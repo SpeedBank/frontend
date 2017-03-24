@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndexRoute, Route, Router } from 'react-router';
+import { IndexRoute, Link, Route } from 'react-router-dom';
 
 import {
   App,
@@ -8,20 +8,19 @@ import {
 } from './containers';
 
 // import higher order components
-// import { RequireAuth } from './components';
-import RequireAuth from './components/RequireAuth';
+import { RequireAuth } from './components';
 
 const Routes = props => (
-  <Router {...props}>
+  <Route>
     <Route>
       <Route path="/" component={RequireAuth(App)}>
-        <IndexRoute component={Homepage} />
+        <IndexRoute component={Homepage} exact />
       </Route>
     </Route>
     <Route>
       <Route path="login" component={Login} />
     </Route>
-  </Router>
+  </Route>
 );
 
 export default Routes;
