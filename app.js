@@ -8,7 +8,6 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var authenticationService = require('./services/authentication_service');
 
 var app = express();
-var session = require('express-session');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,10 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/home', (req, res) => {
+app.get('/home', (req, res) => {
   authenticationService(req, res).then((status) => {
     if (status === 'success') {
-      res.render('index', { title: 'Home' });
+      res.render('home', { title: 'Home' });
     } else if (status === 'unauthenticated') {
       res.redirect('/');
     } else {
@@ -34,6 +33,10 @@ app.use('/home', (req, res) => {
 
 app.get('/',(req, res) => {
   res.render('index', { title: 'Login Page' });
+});
+
+app.get('/location',(req, res) => {
+  res.render('location', { title: 'Location Page' });
 });
 
 app.get('/review',(req, res) => {
