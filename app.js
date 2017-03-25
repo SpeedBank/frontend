@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const payWithCaptureAuth = require('./services/test-auth.js');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -21,16 +22,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next) {
+  if (!req.cookies.token) {
+    payWithCaptureAuth().then((authResponse) => {
+      res.cookie('token', authResponse.token);
+    }).catch((errResponse) => {
+      console.log('Error occured', errResponse);
+      res.send('Error');
+    });
+  }
+  next();
+});
 
 app.use('/', index);
 app.use('/users', users);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
 
 // error handler
 app.use(function(err, req, res, next) {
