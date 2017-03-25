@@ -4,39 +4,46 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-const payWithCaptureAuth = require('./services/test-auth.js');
-
-var index = require('./routes/index');
-var users = require('./routes/users');
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var authenticationService = require('./services/authentication_service');
 
 var app = express();
+var session = require('express-session');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(req, res, next) {
-  if (!req.cookies.token) {
-    payWithCaptureAuth().then((authResponse) => {
-      res.cookie('token', authResponse.token);
-    }).catch((errResponse) => {
-      console.log('Error occured', errResponse);
-      res.send('Error');
-    });
-  }
-  next();
+
+app.use('/', (req, res) => {
+  authenticationService(req, res).then((status) => {
+    if (status === 'success') {
+      res.render('index', { title: 'Home' });
+    } else if (status === 'unauthenticated') {
+      res.redirect('/login');
+    } else {
+      res.render('error', { title: 'Error' });
+    }
+  });
 });
 
-app.use('/', index);
-app.use('/users', users);
+// app.get('/login',(req, res) => {
+//   res.render('login', { title: 'Login Page' });
+// });
 
+app.post('/login', urlencodedParser, (req, res) => {
+  const response = {
+      email: req.body.email,
+      password: req.body.password
+  };
+  console.log(response);
+  res.end(JSON.stringify(response));
+});
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
