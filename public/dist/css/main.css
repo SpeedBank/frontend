@@ -248,13 +248,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-default .navbar-nav>li>a {
-  width: 200px;
+  width: 300px;
   font-weight: bold;
 }
 
 .mega-dropdown {
   position: static !important;
   width: 100%;
+}
+
+.mega-dropdown .link {
+  height: 100px;
+  border: 2px solid #1b96fe;
+  background: white;
+  margin: 20px;
+}
+
+.mega-dropdown .dropdown-menu.mega-dropdown-menu .link > a {
+  display: block;
+  font-weight: 900;
+  padding: 30px;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
 }
 
 .mega-dropdown-menu {
@@ -328,7 +345,6 @@ h1, h2, h3, h4, h5, h6 {
 
 div.hero {
   color: #333333;
-  background: url(../img/div.hero-bg.jpg) no-repeat;
   background-position: 50% 50%;
   background-size: cover;
 }
@@ -502,10 +518,41 @@ footer span.copyright {
 
 .widget .panel-heading {
   border-radius: 0;
+  padding: 15px;
   cursor: pointer;
+  background: #1b96fe;
   font-size: 16px;
   text-decoration: none;
   display: block;
+}
+
+.widget .panel-primary>.panel-heading {
+  background-color: #1b96fe; 
+  border-color: #1b96fe; 
+}
+
+.widget .panel-primary {
+  border-color: #1b96fe; 
+}
+
+.widget .input-group .form-control {
+  padding-left: 25px;
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: 1px solid #cbdbf3;
+  box-shadow: none;
+  outline: none;
+}
+
+.widget .input-group .btn {
+  padding: 14px;
+  outline: none;
+}
+
+.widget .panel.panel-primary {
+  border-radius: 0;
 }
 
 @media (max-width: 768px) {
@@ -664,33 +711,6 @@ body {
   overflow: hidden;
 }
 
-.top_menu {
-  background-color: #fff;
-  width: 100%;
-  padding: 20px 0 15px;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
-}
-.top_menu .buttons {
-  margin: 3px 0 0 20px;
-  position: absolute;
-}
-.top_menu .buttons .button {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 10px;
-  position: relative;
-}
-.top_menu .buttons .button.close {
-  background-color: #f5886e;
-}
-.top_menu .buttons .button.minimize {
-  background-color: #fdbf68;
-}
-.top_menu .buttons .button.maximize {
-  background-color: #a3d063;
-}
 .top_menu .title {
   text-align: center;
   color: #bcbdc0;
@@ -782,60 +802,9 @@ body {
   font-weight: 300;
 }
 
-.bottom_wrapper {
-  position: relative;
-  width: 100%;
-  background-color: #fff;
-  padding: 20px 20px;
-  position: absolute;
-  bottom: 0;
-}
-.bottom_wrapper .message_input_wrapper {
-  display: inline-block;
-  height: 50px;
-  border-radius: 25px;
-  border: 1px solid #bcbdc0;
-  width: calc(100% - 160px);
-  position: relative;
-  padding: 0 20px;
-}
-.bottom_wrapper .message_input_wrapper .message_input {
-  border: none;
-  height: 100%;
-  box-sizing: border-box;
-  width: calc(100% - 40px);
-  position: absolute;
-  outline-width: 0;
-  color: gray;
-}
-.bottom_wrapper .send_message {
-  width: 140px;
-  height: 50px;
-  display: inline-block;
-  border-radius: 50px;
-  background-color: #a3d063;
-  border: 2px solid #a3d063;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.2s linear;
-  text-align: center;
-  float: right;
-}
-.bottom_wrapper .send_message:hover {
-  color: #a3d063;
-  background-color: #fff;
-}
-.bottom_wrapper .send_message .text {
-  font-size: 18px;
-  font-weight: 300;
-  display: inline-block;
-  line-height: 48px;
-}
-
 .message_template {
   display: none;
 }
-
 
 .error {
   padding: 10px 30px;
