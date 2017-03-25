@@ -2,9 +2,9 @@ var axios = require('axios');
 var querystring = require('querystring');
 
 var pwcCredentials = require('../config/pwcCredentials');
+var config = require('../config/headerConfig').header;
 
-var clientId = pwcCredentials.pwcCredentials.clientId;
-var clientSecret = pwcCredentials.pwcCredentials.clientSecret;
+const { clientId, clientSecret } = pwcCredentials.pwcCredentials;
 
 function authenticate() {
   var data = {
@@ -12,7 +12,20 @@ function authenticate() {
     client_secret: clientSecret,
     grant_type: 'client_credentials',
   };
-  return axios.post('https://pwcstaging.herokuapp.com/oauth/token', querystring.stringify(data));
+  config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  axios.post('https://pwcstaging.herokuapp.com/oauth/token', querystring.stringify(data), config)
+    .then((response) => {
+        if (response.status == 200) {
+          const result = Object.assign({}, response.data);
+          expireTime = getExpireTime(response.data.expires_in);
+          result.expireTime = expireTime;
+          console.log(result);
+          return result;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
 }
 
 function getExpireTime(expiresIn) {
@@ -31,6 +44,6 @@ function isValid(expireTime) {
 }
 
 module.exports = {
-  authenticate: authenticate,
-  isValid: isValid,
+  authenticate,
+  isValid,
 };
