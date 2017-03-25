@@ -18,5 +18,8 @@
     "morgan": "~1.7.0",
     "querystring": "^0.2.0",
     "serve-favicon": "~2.3.2"
+  },
+  "devDependencies": {
+    "node-sass-middleware": "^0.11.0"
   }
 }
