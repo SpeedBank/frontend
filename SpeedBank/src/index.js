@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import {
   App,
+  Intercom
 } from './containers';
 
 import store from './store';
