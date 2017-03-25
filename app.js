@@ -61,7 +61,7 @@ app.post('/login', urlencodedParser, (req, res) => {
   authenticationService.login(req)
     .then((userInfo) => {
       if (userInfo === 'loggedIn') {
-        res.cookie('userInfo', JSON.stringify(userInfo.data));
+        return authenticationService.pwcAuthenticate(req, res);
       } else if (userInfo && userInfo.data && userInfo.data.message === 'Invalid Credentials.'){
         res.send('Failure');
         deferred.reject('Failure');
@@ -72,11 +72,14 @@ app.post('/login', urlencodedParser, (req, res) => {
       if (status === 'success') {
         res.send('Succesful');
       } else {
-        res.send('Failure');
+        res.send('Failure to authenticate with PaywithCapture at the moment');
       }
     })
     .catch((err) => {
-      console.log('Error', err);
+      console.log('error', err);
+      if (err.message === 'Request failed with status code 401'){
+        res.send('Error in credentials');
+      }
     });
 });
 // error handler
