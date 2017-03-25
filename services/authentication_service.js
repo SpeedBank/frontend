@@ -13,6 +13,8 @@ function pwcAuthenticate(req, res) {
     .catch((errResponse) => {
       deferred.reject('error');
     });
+  } else {
+    deferred.resolve('success');
   }
   return deferred.promise;
 }

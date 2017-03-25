@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var authenticationService = require('./services/authentication_service');
+var q = require('q');
 
 var app = express();
 
@@ -24,38 +25,43 @@ app.get('/home', (req, res) => {
     if (status === 'success') {
       res.render('home', { title: 'Home' });
     } else if (status === 'unauthenticated') {
-      res.redirect('/');
+      res.send('Not authenticated');
     } else {
       res.render('error', { title: 'Error' });
     }
   });
 });
 
-app.get('/',(req, res) => {
+app.get('/', (req, res) => {
   res.render('index', { title: 'Login Page' });
 });
 
-app.get('/location',(req, res) => {
+app.get('/location', (req, res) => {
   res.render('location', { title: 'Location Page' });
 });
 
-app.get('/review',(req, res) => {
+app.get('/review', (req, res) => {
   res.render('review', { title: 'Review Page' });
 });
 
-app.get('/login',(req, res) => {
+app.get('/login', (req, res) => {
   res.render('index', { title: 'Login Page' });
 });
 
 app.post('/login', urlencodedParser, (req, res) => {
+  let deferred = q.defer();
   authenticationService.login(req)
     .then((userInfo) => {
-      if (userInfo !== 'loggedIn') {
+      if (userInfo === 'loggedIn') {
         res.cookie('userInfo', JSON.stringify(userInfo.data));
+      } else if (userInfo && userInfo.data && userInfo.data.message === 'Invalid Credentials.'){
+        res.send('Failure');
+        deferred.reject('Failure');
+        return deferred.promise;
       }
       return authenticationService.pwcAuthenticate(req, res);
     }).then(function (status) {
-      if (status === "success") {
+      if (status === 'success') {
         res.send('Succesful');
       } else {
         res.send('Failure');
