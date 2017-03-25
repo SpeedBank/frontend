@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/home', (req, res) => {
-  authenticationService(req, res).then((status) => {
+  authenticationService.pwcAuthenticate(req, res).then((status) => {
     if (status === 'success') {
       res.render('home', { title: 'Home' });
     } else if (status === 'unauthenticated') {
@@ -43,13 +43,27 @@ app.get('/review',(req, res) => {
   res.render('review', { title: 'Review Page' });
 });
 
+app.get('/login',(req, res) => {
+  res.render('index', { title: 'Login Page' });
+});
+
 app.post('/login', urlencodedParser, (req, res) => {
-  const response = {
-      email: req.body.email,
-      password: req.body.password
-  };
-  console.log(response);
-  res.end(JSON.stringify(response));
+  authenticationService.login(req)
+    .then((userInfo) => {
+      if (userInfo !== 'loggedIn') {
+        res.cookie('userInfo', JSON.stringify(userInfo.data));
+      }
+      return authenticationService.pwcAuthenticate(req, res);
+    }).then(function (status) {
+      if (status === "success") {
+        res.send('Succesful');
+      } else {
+        res.send('Failure');
+      }
+    })
+    .catch((err) => {
+      console.log('Error', err);
+    });
 });
 // error handler
 app.use(function(err, req, res, next) {
