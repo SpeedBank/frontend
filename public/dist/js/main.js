@@ -20,6 +20,10 @@
       offset: {
         top: 100
       }
+    });
+
+    $(document).on('click', '.mega-dropdown', function(e) {
+      e.stopPropagation()
     })
 
 })(jQuery);

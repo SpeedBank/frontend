@@ -20,21 +20,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req, res) => {
+app.use('/home', (req, res) => {
   authenticationService(req, res).then((status) => {
     if (status === 'success') {
       res.render('index', { title: 'Home' });
     } else if (status === 'unauthenticated') {
-      res.redirect('/login');
+      res.redirect('/');
     } else {
       res.render('error', { title: 'Error' });
     }
   });
 });
 
-// app.get('/login',(req, res) => {
-//   res.render('login', { title: 'Login Page' });
-// });
+app.get('/',(req, res) => {
+  res.render('index', { title: 'Login Page' });
+});
+
+app.get('/review',(req, res) => {
+  res.render('review', { title: 'Review Page' });
+});
 
 app.post('/login', urlencodedParser, (req, res) => {
   const response = {
