@@ -1,3 +1,5 @@
+var tour;
+
 (function ($) {
   $('a.page-scroll').bind('click', function (event) {
     var $anchor = $(this);
@@ -22,14 +24,40 @@
     }
   });
 
-  $(document).on('click', '.mega-dropdown', function (e) {
-    e.stopPropagation();
+  $(document).on('click', '.mega-dropdown', function (event) {
+    event.stopPropagation();
   });
 
-  $('.widget > .panel-heading').click(function () {
+  $(document).on('click', '.widget > .panel-heading', function (event) {
     $('.btn-widget').trigger('click');
-    return false;
+    event.preventDefault();
   });
+
+  $(document).on('click', '.btn-group.btn-group-justified .btn', function (event) {
+    $('#rating-btn').val($(this).text());
+    $('.btn-group.btn-group-justified .btn').removeClass('active');
+    $(this).toggleClass('active');
+  });
+
+  tour = new Tour({
+    steps: [
+      {
+        element: '.navbar-custom',
+        title: 'Здравствуйте',
+        content: 'Добро пожаловать в виртуальный тур.'
+      },
+      {
+        element: '.panel-heading',
+        title: 'Это ссылка',
+        content: 'Если нажать на эту ссылку - ничего не произойдет.'
+      }
+    ],
+    backdrop: true,
+    storage: false
+  });
+
+  tour.init();
+  tour.start();
 
 })(jQuery);
 

@@ -40,6 +40,14 @@ app.get('/location', (req, res) => {
   res.render('location', { title: 'Location Page' });
 });
 
+app.get('/request', (req, res) => {
+  res.render('request', { title: 'Request Page' });
+});
+
+app.get('/account', (req, res) => {
+  res.render('account', { title: 'Create Account' });
+});
+
 app.get('/review', (req, res) => {
   res.render('review', { title: 'Review Page' });
 });
