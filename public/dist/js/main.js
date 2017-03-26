@@ -1,8 +1,6 @@
 const ACTIVECHAT = 'activeChat';
 const LASTQUERY = 'lastQuery';
 const CHAT_API_ERROR_MESSAGE = 'Something went wrong, Please try again!';
-const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-let observer;
 
 (function ($) {
   $('a.page-scroll').bind('click', function (event) {
@@ -69,26 +67,6 @@ let observer;
 
   $('#btn-chat').on('click', function (e) {
     handleChatSubmit();
-  });
-
-  $('.introjs-overlay').bind('DOMSubtreeModified', function(e) {
-      alert('class changed');
-  });
-
-  observer = new MutationObserver(function (mutations) {
-    // fired when a mutation occurs
-    for (let i = 0; i < mutations.length; i += 1) {
-      if (mutations[i].target === $('.introjs-overlay')[0]) {
-        $('.widget').css('position', 'absolute');
-      } else if (!$('.introjs-overlay')[0]) {
-        $('.widget').css('position', 'fixed');
-      }
-    }
-  });
-
-  observer.observe(document, {
-    subtree: true,
-    attributes: true
   });
 
   function injectNewResponsesIntoChat(payload) {

@@ -36,7 +36,7 @@ function login(req) {
   return deferred.promise;
 }
 
-function signUp (req) {
+function signUp(req) {
   const mutationString = `
     mutation {
       createUser(input: {

@@ -18,9 +18,17 @@
                     <a href="javascript:void(0)" onclick="introJs().start();" class="dropdown-toggle">Start Tour</a>
                 </li>
                 <% if(view !== "Login"){ %>
-                    <li class="dropdown">
-                        <a href="#" data-intro="This is where you get all your menu options" class="dropdown-toggle menu-link" data-toggle="modal" data-target="#myModalFullscreen" contenteditable="false">What Would you like to do? <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
-                    </li>
+                <li class="dropdown">
+                    <a href="#" data-intro="This is where you get all your menu options" class="dropdown-toggle menu-link" data-toggle="modal" data-target="#myModalFullscreen" contenteditable="false">What Would you like to do? <span class="caret"></span></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Account <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/accountsummary">Profile</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
                 <% } %>
             </ul>
         </div>
