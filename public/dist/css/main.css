@@ -31,7 +31,7 @@ legend {
 }
 
 .text-muted {
-  color: #777777;
+  color: #999999;
 }
 
 .text-primary {
@@ -114,33 +114,40 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
 }
 
-.btn-group.btn-group-justified .btn {
+.btn-group.btn-group-rating .btn {
   border: 1px solid transparent;
   border-radius: 0;
 }
 
-.btn-group.btn-group-justified .btn.active {
+.btn-group .btn.active {
   border: 1px solid #1b96fe;
+  outline: none;
   box-shadow: none;
 }
 
-.btn-group.btn-group-justified .btn:first-child {
+.btn-group.btn-group-gender .btn.active {
+  border: 1px solid rgba(27, 150, 254, 0.5);
+  background: rgba(27, 150, 254, 0.5);;
+  color: #fff;
+}
+
+.btn-group.btn-group-rating .btn:first-child {
   background: rgba(27, 150, 254, 0.1);
 }
 
-.btn-group.btn-group-justified .btn:nth-child(2) {
+.btn-group.btn-group-rating .btn:nth-child(2) {
   background: rgba(27, 150, 254, 0.2);
 }
 
-.btn-group.btn-group-justified .btn:nth-child(3) {
+.btn-group.btn-group-rating .btn:nth-child(3) {
   background: rgba(27, 150, 254, 0.3);
 }
 
-.btn-group.btn-group-justified .btn:nth-child(4) {
+.btn-group.btn-group-rating .btn:nth-child(4) {
   background: rgba(27, 150, 254, 0.4);
 }
 
-.btn-group.btn-group-justified .btn:last-child {
+.btn-group.btn-group-rating .btn:last-child {
   background: rgba(27, 150, 254, 0.5);
 }
 
@@ -271,6 +278,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0;
 }
 
+.form-info {
+  margin-left: 10px;
+}
+
 .list-group-item.active,
 .list-group-item.active:focus,
 .list-group-item.active:hover {
@@ -285,7 +296,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #fff;
   border-color: #ccc;
   text-transform: uppercase;
-  padding: 15px 0;
+  padding: 15px 20px;
   border-radius: 3px;
   width: 49%;
   float: right;
@@ -902,6 +913,17 @@ footer span.copyright {
   bottom: 0;
   right: 0;
   min-height: 70px;
+}
+
+.loader {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8) url("/dist/img/loader.gif") 50% 50% no-repeat;
 }
 
 .error {

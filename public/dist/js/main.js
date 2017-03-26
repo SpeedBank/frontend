@@ -31,9 +31,15 @@
     event.preventDefault();
   });
 
-  $(document).on('click', '.btn-group.btn-group-justified .btn', function () {
+  $(document).on('click', '.btn-group.btn-group-rating .btn', function () {
     $('#rating-btn').val($(this).text());
-    $('.btn-group.btn-group-justified .btn').removeClass('active');
+    $('.btn-group.btn-group-rating .btn').removeClass('active');
+    $(this).addClass('active');
+  });
+
+  $(document).on('click', '.btn-group.btn-group-gender .btn', function () {
+    $('#gender-btn').val($(this).text());
+    $('.btn-group.btn-group-gender .btn').removeClass('active');
     $(this).addClass('active');
   });
 
