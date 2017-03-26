@@ -102,30 +102,42 @@ let observer;
     localStorage.removeItem(LASTQUERY);
   }
 
-  function postQueryToApi(query) {
-    $.post('https://speedbank.herokuapp.com/',
-      {
-        name: 'Donald Duck',
-        city: 'Duckburg'
-      },
-      (data, status) => {
-        if (status === 200) {
-          injectNewResponsesIntoChat(data);
-        } else {
-          injectNewResponsesIntoChat([CHAT_API_ERROR_MESSAGE]);
-        }
-      }
-    );
-    resetActiveQueryInStorage();
+  function makeInquiry(query) {
+    var promise = new Promise (function (resolve, reject) {
+      app.post(`mutation{createInquiry(input:{data:{question:${query}, bankId:1}}){inquiry{question,id,originalId}}}`, function (result) {
+        resolve(result.data.createInquiry.inquiry);
+      });
+    });
+
+    promise.then(function (response) {
+      resetActiveQueryInStorage();
+      injectNewResponsesIntoChat('Your query has been taken. Our customer representative will get in touch with you');
+    });
   }
 
-  function getQueryToApi(query) {
-    $.get('https://speedbank.herokuapp.com/', function (result, status) {
-      if (status === 200) {
-        injectNewResponsesIntoChat(result);
-      } else {
-        injectNewResponsesIntoChat([CHAT_API_ERROR_MESSAGE]);
-      }
+  function getFaqs(query) {
+    const promise = new Promise (function (resolve, reject) {
+        app.post('query{faqs{edges{node{id,originalId,question,answer}}}}', function (result) {
+          resolve(result.data.faqs.edges);
+        });
+    });
+
+    promise.then(function (result) {
+      // console.log(result);
+      const fs = FuzzySet();
+      fs.add(query);
+      // const faqs = Object.assign({}, result);
+      let max = 0;
+      let bestMatch = '';
+
+      result.forEach(item => {
+        const fsResult = fs.get(item.node.question);
+        if (fsResult[0][0] > max) {
+          max = fsResult[0][0];
+          bestMatch = item.node.answer;
+        }
+      });
+      injectNewResponsesIntoChat([bestMatch]);
     });
   }
 
@@ -139,19 +151,17 @@ let observer;
     const query = document.getElementById('btn-input').value;
     injectUsersChat(query);
     if (query.toLowerCase() === 'yes' && localStorage.getItem(ACTIVECHAT)) {
-      return;
-      // return postQueryToApi(localStorage.getItem(LASTQUERY));
+      return makeInquiry(localStorage.getItem(LASTQUERY));
     }
-    const remoteMessages = ['We create accounts', 'We take card', 'I can help'];
-    injectNewResponsesIntoChat(remoteMessages);
-
-    // save query to localStorage
+    // const remoteMessages = ['We create accounts', 'We take card', 'I can help'];
+    const remoteMessages = getFaqs(query);
     localStorage.setItem(ACTIVECHAT, true);
     localStorage.setItem(LASTQUERY, query);
     setTimeout(() => {
-      const message = ['Not satisfied? Send <strong>YES</strong> for more information', '<strong>Send YES</strong>'];
+      const message = ['Not satisfied? Would you like make your request a new Inquiry? Send <strong>YES</strong> to confirm', '<strong>Send YES</strong>'];
       injectNewResponsesIntoChat(message);
     }, 6000);
+    injectNewResponsesIntoChat(remoteMessages);
   }
 })(jQuery);
 
