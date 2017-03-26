@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 
 app.get('/home', (req, res) => {
   if (req.cookies.userInfo) {
-    return res.render('home', { title: 'Home' });
+    return res.render('home', { title: 'Home', view: 'Login', alert: null });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
@@ -57,7 +57,7 @@ app.get('/location', (req, res) => {
 
 app.get('/request', (req, res) => {
   if (req.cookies.userInfo) {
-    res.render('request', { title: 'Request Page', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+    res.render('request', { title: 'Request Page', alert: null, view: 'Login', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
 });
