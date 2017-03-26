@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head %>
+
+  <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  <body id="page-top" class="bg-gray">
+
+        <% include partials/header %>
+
+    <div id="map">
+        <p>Loading branches...</p>
+    </div>
+
+    <script src="/dist/js/map.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrkvQ3QbFnYRVMGhMQgHnzyn_VjIAOSPw&callback=loadBranches">
+    </script>
+    <% include partials/footer %>
+  </body>
+</html>
