@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 
 app.get('/location', (req, res) => {
   if (req.cookies.userInfo) {
-    return res.render('location', { title: 'Location Page', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+    return res.render('location', { title: 'Location Page', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Location' });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
@@ -71,9 +71,9 @@ app.get('/account', (req, res) => {
 
 app.post('/review', urlencodedParser, (req, res) => {
   customerServiceReview.create(req).then(() => {
-    res.render('review', { title: 'Customer Service Review', alert: { message: 'Your review was retrieved succesfully' }, user: { } });
+    res.render('review', { title: 'Customer Service Review', alert: { message: 'Your review was retrieved succesfully' }, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Review' });
   }).catch(() =>{
-    res.render('review', { title: 'Customer Service Review', alert: { message: 'Your review was retrieved succesfully' }, user: { } });
+    res.render('review', { title: 'Customer Service Review', alert: { message: 'Your review was retrieved succesfully' }, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Review' });
   });
 });
 
@@ -81,7 +81,7 @@ app.get('/review', (req, res) => {
   if (!req.authenticated) {
     return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
-  res.render('review', { title: 'Review Page', user: {}, alert: null });
+  res.render('review', { title: 'Review Page', user: {}, alert: null, view: 'Review' });
 });
 
 app.get('/logout', (req, res) => {
