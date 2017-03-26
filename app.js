@@ -48,6 +48,13 @@ app.get('/location', (req, res) => {
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
+app.get('/inquiries', (req, res) => {
+  if (req.cookies.userInfo) {
+    return res.render('inquiries', { title: 'Inquiries Page', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Inquiries' });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
+});
+
 app.get('/request', (req, res) => {
   if (req.cookies.userInfo) {
     res.render('request', { title: 'Request Page', alert: null, view: 'Request', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });

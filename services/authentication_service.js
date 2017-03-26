@@ -71,7 +71,7 @@ function getCurrentUser(req) {
   if (!req.cookies.userInfo) {
     return false;
   } else {
-    const userInfo = JSON.parse(req.cookies.userInfo));
+    const userInfo = JSON.parse(req.cookies.userInfo);
     console.log("UserInfo", userInfo.email);
     return {
       email: userInfo.email,

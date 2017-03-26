@@ -72,7 +72,7 @@ const CHAT_API_ERROR_MESSAGE = 'Something went wrong, Please try again!';
   function injectNewResponsesIntoChat(payload) {
     if (payload) {
       payload.forEach(message => {
-        $('ul.messages').append(prepareChatItem('right', message));
+        $('ul.messages').append(prepareChatItem('left', message));
       });
     }
   }
@@ -123,7 +123,7 @@ const CHAT_API_ERROR_MESSAGE = 'Something went wrong, Please try again!';
   }
 
   function injectUsersChat(query) {
-    const localMessage = prepareChatItem('left', query);
+    const localMessage = prepareChatItem('right', query);
     $('ul.messages').append(localMessage);
     $('#btn-input').val('');
   }
