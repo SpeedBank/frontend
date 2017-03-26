@@ -6,6 +6,7 @@
 
         <% include partials/header %>
 
+
         <div class="hero">
             <div class="container">
                 <div class="row">
@@ -20,15 +21,22 @@
                             <div id="signin-carousel" class="carousel slide">
                                 <div class="error"></div>
                                 <div class="carousel-inner" role="listbox">
-                                    <div class="item active content-item">
-                                        <legend>Log into your account...</legend>
+                                    <% var isLogin = (view === "Login") ? "active" : "" %>
+                                    <div class="item content-item <%= isLogin %>">
+                                        <span class="signin-link"> New to SpeedBank?
+                                            <a class="page-link" data-target="#signin-carousel" data-slide-to="1"> Sign up</a> for free.
+                                        </span>
                                         <% include partials/forms/login %>
                                         <p class="signin-link"> New to SpeedBank?
                                             <a class="page-link" data-target="#signin-carousel" data-slide-to="1"> Sign up</a> for free.
                                         </p>
                                     </div>
-                                    <div class="item content-item">
-                                        <legend>Sign up to get started...</legend>
+
+                                    <% var isSignUp = (view === "SignUp") ? "active" : "" %>
+                                    <div class="item content-item <%= isSignUp %>">
+                                        <span class="signin-link">
+                                            <a class="page-link" data-target="#signin-carousel" data-slide-to="0">Log in</a> to your account.
+                                        </span>
                                         <% include partials/forms/signup %>
                                         <p class="signin-link">
                                             <a class="page-link" data-target="#signin-carousel" data-slide-to="0">Log in</a> to your account.
@@ -42,6 +50,14 @@
             </div>
         </div>
 
+        <% if (alert) { %>
+          <script>
+
+            $(function(){
+              toastr.error('<%= alert.message %>', 'Error in SignUp!');
+            });
+          </script>
+        <% } %>
         <% include partials/footer %>
 
     </body>

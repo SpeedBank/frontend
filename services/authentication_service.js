@@ -1,7 +1,8 @@
 const payWithCaptureAuth = require('./pwcAuthenticationService');
-const q = require('q');
+let q = require('Q');
 const axios = require('axios');
-const url = 'https://speedbank.herokuapp.com/api/login';
+const url = require('../config/external-services').speedBankUrl;
+const graphqlUrl = require('../config/external-services').speedBankGraphUrl;
 
 function pwcAuthenticate(req, res) {
   var deferred = q.defer();
@@ -19,7 +20,7 @@ function pwcAuthenticate(req, res) {
   return deferred.promise;
 }
 
-function login(req, username = '', password = '') {
+function login(req) {
   var deferred = q.defer();
   const config = {
     auth: {
@@ -34,7 +35,33 @@ function login(req, username = '', password = '') {
   return deferred.promise;
 }
 
+function signUp (req) {
+  mutationString = `
+    mutation {
+      createUser(input: {
+        userData: {
+          firstName: "${req.body.firstName}",
+          lastName: "${req.body.lastName}",
+          username: "${req.body.userName}",
+          email: "${req.body.email}",
+          password: "${req.body.password}"
+        }
+      }){
+        user{
+          id,
+          email
+        }
+      }
+    }
+  `
+  const mutationQuery = encodeURIComponent(mutationString);
+  const url = `${graphqlUrl}${mutationQuery}`;
+  console.log('Query url', url);
+  return axios.post(url);
+}
+
 module.exports = {
   pwcAuthenticate,
-  login
+  login,
+  signUp
 };

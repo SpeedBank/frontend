@@ -20,6 +20,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req, res, next) {
+  // Redirect Home if already logged in
+  if (req.originalUrl === '/login' && req.cookies.userInfo) {
+    res.redirect('/home');
+  }
+  next();
+});
+
 app.get('/home', (req, res) => {
   authenticationService.pwcAuthenticate(req, res).then((status) => {
     if (status === 'success') {
@@ -33,7 +41,7 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Login Page' });
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/location', (req, res) => {
@@ -57,33 +65,48 @@ app.get('/review', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('index', { title: 'Login Page' });
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
+});
+
+app.get('/signup', (req, res) => {
+  res.render('index', { title: 'SignUp Page', view: 'SignUp', alert: null });
 });
 
 app.post('/login', urlencodedParser, (req, res) => {
-  let deferred = q.defer();
   authenticationService.login(req)
     .then((userInfo) => {
       if (userInfo === 'loggedIn') {
-        return authenticationService.pwcAuthenticate(req, res);
-      } else if (userInfo && userInfo.data && userInfo.data.message === 'Invalid Credentials.'){
-        res.send('Failure');
-        deferred.reject('Failure');
-        return deferred.promise;
+        res.redirect('/home');
+      } else if (userInfo && userInfo.data) {
+        res.cookie('userInfo', userInfo.data);
+        res.redirect('/home');
       }
-      return authenticationService.pwcAuthenticate(req, res);
-    }).then(function (status) {
-      if (status === 'success') {
-        res.send('Succesful');
-      } else {
-        res.send('Failure to authenticate with PaywithCapture at the moment');
-      }
-    })
-    .catch((err) => {
-      console.log('error', err);
+    }).catch((err) => {
       if (err.message === 'Request failed with status code 401'){
         res.send('Error in credentials');
       }
+    });
+});
+
+app.get('/new_account', (req, res) => {
+
+  res.render('account', { title: 'Create New Account' });
+});
+
+
+app.post('/signup', urlencodedParser, (req, res) => {
+  authenticationService.signUp(req)
+    .then((signUpResponse) => {
+      console.log('Sign Up details', signUpResponse.data.data.createUser.user);
+      if (signUpResponse.data.data.createUser.user) {
+        res.cookie('userInfo', signUpResponse.data.data.createUser.user);
+        res.render('home', { title: 'Home Page', alert: 'SignUp Succesful' });
+      } else {
+        var templateObject = { title: 'Sign Up Page', error: 'Please enter your details correctly', view: 'SignUp', alert: { message: 'Please Supply Valid Information' } };
+        res.render('index', templateObject);
+      }
+    }).catch((err) => {
+      console.log('Error', err)
     });
 });
 // error handler
