@@ -29,17 +29,17 @@
                                                 <legend>Make a New Request.</legend>
                                                 
                                                 <div class="form-group">
-                                                    <select name="" class="form-control">
-                                                        <option selected disabled>Bank Account</option>
-                                                        <option value="">1234567890</option>
-                                                        <option value="">0987654321</option>
+                                                    <select name="" class="form-control" id="bank_accounts">
                                                     </select>
                                                 </div>
                                             
                                                 <div class="form-group">
-                                                    <select class="form-control">
-                                                        <option selected disabled>Bank Branch</option>
-                                                        <option value="">Victoria Island</option>
+                                                    <select class="form-control" id="branches">
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <select class="form-control" id="request_type">
                                                     </select>
                                                 </div>
                                             
@@ -93,7 +93,7 @@
               </div>
             </div>
         </div>
-
+            <script src="/dist/js/requests.js"></script>
         <% include partials/footer %>
 
     </body>

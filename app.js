@@ -41,13 +41,9 @@ app.get('/home', (req, res) => {
 
 app.get('/', (req, res) => {
   if (req.authenticated) {
-    return res.render('home', { title: 'Home' });
+    return res.render('dashboard', { title: 'Dashboard' });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
-});
-
-app.get('/dashboard', (req, res) => {
-  res.render('dashboard', { title: 'Dashboard Page' });
 });
 
 app.get('/location', (req, res) => {
@@ -83,9 +79,9 @@ app.get('/review', (req, res) => {
   res.render('review', { title: 'Review Page' });
 });
 
-app.get('/login', (req, res) => {
-  console.log(req.cookies('userInfo'));
-  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
+app.get('/logout', (req, res) => {
+    res.clearCookie('userInfo');
+    res.redirect('/');
 });
 
 app.get('/signup', (req, res) => {
@@ -96,10 +92,10 @@ app.post('/login', urlencodedParser, (req, res) => {
   authenticationService.login(req)
     .then((userInfo) => {
       if (userInfo === 'loggedIn') {
-        res.redirect('/home');
+        res.redirect('/');
       } else if (userInfo && userInfo.data) {
         res.cookie('userInfo', JSON.stringify(userInfo.data));
-        res.redirect('/home');
+        res.redirect('/');
       }
     }).catch((err) => {
       if (err.message === 'Request failed with status code 401'){
