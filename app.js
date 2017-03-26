@@ -46,6 +46,10 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard', { title: 'Dashboard Page' });
+});
+
 app.get('/location', (req, res) => {
   res.render('map', { title: 'Location Page' });
 });

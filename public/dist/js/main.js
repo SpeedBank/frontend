@@ -26,10 +26,6 @@ const CHAT_API_ERROR_MESSAGE = 'Something went wrong, Please try again!';
     }
   });
 
-  $(document).on('click', '.mega-dropdown', function (event) {
-    event.stopPropagation();
-  });
-
   $(document).on('click', '.widget > .panel-heading', function (event) {
     $('.btn-widget').trigger('click');
     event.preventDefault();
@@ -56,12 +52,6 @@ const CHAT_API_ERROR_MESSAGE = 'Something went wrong, Please try again!';
 
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
-    $('.modal.modal-fullscreen .modal-body a').hover(function () {
-      $(this).stop().animate({ opacity: 1 }, 200);
-    },
-    function () {
-      $(this).stop().animate({ opacity: 0.5 }, 200);
-    });
   });
 
   $('.panel-body').bind('DOMSubtreeModified', function() {
