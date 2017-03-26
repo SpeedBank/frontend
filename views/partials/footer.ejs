@@ -13,3 +13,22 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
 <script src="/plugins/introJs/js/intro.js"></script>
 <script src="/dist/js/main.js"></script>
+<script src="/dist/js/map.js"></script>
+<% if (user.user_id){ %>
+  <script>
+    window.intercomSettings = {
+      app_id: "qnducmrw",
+      user_id: "<%= user.user_id %>",
+      name: "<%= user.firstName %>", // Full name
+      email: "<%= user.email %>" // Email address
+    };
+  </script>
+  <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/qnducmrw';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+<% } else { %>
+  <script>
+    window.intercomSettings = {
+      app_id: "qnducmrw"
+    };
+  </script>
+  <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/qnducmrw';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+<% } %>

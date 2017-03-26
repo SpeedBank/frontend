@@ -28,7 +28,7 @@ function updateAdminFull(localData) {
 }
 
 // function createBankAccount(token, data) {
-function createBankAccount() {
+function createBankAccount(token, data) {
   config.headers.Authorization = `Bearer ${token}`;
   axios.post('https://pwcstaging.herokuapp.com/user/requestBankAccount', JSON.stringify(data), config)
     .then(response => {

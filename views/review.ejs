@@ -10,32 +10,32 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-xs-12">
                     <div class="content">
-                        <form action="" method="POST" role="form" class="form">
+                        <form action="/review" method="POST" role="form" class="form">
                             <legend>Please let us know how you feel.</legend>
-                            
+
                             <fieldset>
                                 <div class="form-group">
-                                    <select name="" class="form-control">
+                                    <select name="bankBranch" class="form-control">
                                         <option value="" selected disabled>What bank branch did you visit?</option>
-                                        <option value="">Victoria Island</option>
-                                        <option value="">Ikeja</option>
-                                        <option value="">Maryland</option>
+                                        <option value="Victoria Island">Victoria Island</option>
+                                        <option value="Ikeja">Ikeja</option>
+                                        <option value="MaryLand">Maryland</option>
                                     </select>
                                 </div>
                             </fieldset>
-                            
+
                             <fieldset>
                                 <div class="form-group">
-                                    <select class="form-control">
+                                    <select name="bankAttendant" class="form-control">
                                         <option value="">What is the name of the bank attendant?</option>
-                                        <option value="">Victoria</option>
+                                        <option value="Victoria">Victoria</option>
                                     </select>
                                 </div>
                             </fieldset>
-                            
+
                             <fieldset>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="" placeholder="Input field">
+                                    <input type="text" class="form-control" id="" placeholder="Message">
                                 </div>
                             </fieldset>
 
@@ -57,16 +57,25 @@
                             <fieldset>
                                 <p>Any other comments?</p>
                                 <div class="form-group textarea">
-                                    <textarea name="" id="input" class="form-control" rows="4" required="required"></textarea>
+                                    <textarea name="comments" id="input" class="form-control" rows="4" required="required"></textarea>
                                 </div>
                             <fieldset>
-                        
+
                             <button type="submit" class="btn btn-primary">Leave a Review</button>
                         </form>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
+
+        <% if (alert) { %>
+          <script>
+
+            $(function(){
+              toastr.info('<%= alert.message %>', 'Succesful');
+            });
+          </script>
+        <% } %>
 
         <% include partials/footer %>
 

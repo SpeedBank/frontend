@@ -1,12 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var authenticationService = require('./services/authentication_service');
-var q = require('q');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const authenticationService = require('./services/authentication_service');
+const q = require('q');
+const accountCreationService = require('./services/accountCreationService');
+var customerServiceReview = require('./services/customerServiceReview');
 
 var app = express();
 
@@ -33,7 +35,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/home', (req, res) => {
-  if (req.authenticated) {
+  if (req.cookies.userInfo) {
     return res.render('home', { title: 'Home' });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
@@ -43,40 +45,43 @@ app.get('/', (req, res) => {
   if (req.authenticated) {
     return res.render('dashboard', { title: 'Dashboard' });
   }
-  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
 });
 
 app.get('/location', (req, res) => {
-  res.render('map', { title: 'Location Page' });
+  if (req.cookies.userInfo) {
+    return res.render('location', { title: 'Location Page', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/request', (req, res) => {
-  if (req.authenticated) {
+  if (req.cookies.userInfo) {
     res.render('request', { title: 'Request Page' });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/account', (req, res) => {
-  if (req.authenticated) {
-    authenticationService.pwcAuthenticate(req, res).then((status) => {
-      if (status === 'success') {
-        return res.redirect('/account');
-      } else {
-        return res.render('account', { title: 'Account', alert: { message: 'An Error occured, please try again later' } });
-      }
-    });
-    return res.render('account', { title: 'Create Account' });
+  if (!req.cookies.userInfo) {
+    return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
   }
-  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
+  res.render('account', { title: 'Account Page', alert: null, user: {} });
 });
 
-app.get('/inquiries', (req, res) => {
-  res.render('inquiries', { title: 'Your Enquiries' });
+app.post('/review', urlencodedParser, (req, res) => {
+  customerServiceReview.create(req).then(() => {
+    res.render('review', { title: 'Customer Service Review', alert: { message: 'Your review was retrieved succesfully' }, user: { } });
+  }).catch(() =>{
+    res.render('review', { title: 'Customer Service Review', alert: { message: 'Your review was retrieved succesfully' }, user: { } });
+  });
 });
 
 app.get('/review', (req, res) => {
-  res.render('review', { title: 'Review Page' });
+  if (!req.authenticated) {
+    return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
+  }
+  res.render('review', { title: 'Review Page', user: {}, alert: null });
 });
 
 app.get('/logout', (req, res) => {
@@ -104,19 +109,38 @@ app.post('/login', urlencodedParser, (req, res) => {
     });
 });
 
+app.post('/account', (req, res) => {
+  if (!req.cookies.userInfo) {
+    return res.render('index', { title: 'SignIn Page', view: 'SignIn', alert: null });
+  }
+  const payload = {
+    email: req.body.email,
+    bvn: req.body.bvn,
+    gender: req.body.gender,
+    address1: req.body.address1,
+    address2: req.body.address2,
+    dateofbirth: req.body
+  };
+  authenticationService.pwcAuthenticate(req, res).then((status) => {
+    accountCreationService.createBankAccount(payload).then((res) => {
+
+    });
+  });
+});
+
 app.get('/new_account', (req, res) => {
-  if (!authenticationService.isLoggedIn(req)) {
-    res.render('index', { title: 'SignIn Page', view: 'SignIn', alert: null });
+  if (!req.cookies.userInfo) {
+    return res.render('index', { title: 'SignIn Page', view: 'SignIn', alert: null, user: {} });
   }
   authenticationService.pwcAuthenticate(req, res).then((status) => {
     if (status === 'success') {
-      res.render('account');
+      res.render('account', { title: 'New Bank Account', alert: null, user: { } });
     } else {
       res.render('account', { title: 'New Bank Account', alert: { message: 'An Error occured, please try again later' } });
     }
   }).catch((err) => {
-    res.render('account', err)
-  })
+    console.log(err);
+  });
 });
 
 
@@ -128,7 +152,7 @@ app.post('/signup', urlencodedParser, (req, res) => {
         res.cookie('userInfo', signUpResponse.data.data.createUser.user);
         res.render('home', { title: 'Home Page', alert: 'SignUp Succesful' });
       } else {
-        var templateObject = { title: 'Sign Up Page', error: 'Please enter your details correctly', view: 'SignUp', alert: { message: 'Please Supply Valid Information' } };
+        const templateObject = { title: 'Sign Up Page', error: 'Please enter your details correctly', view: 'SignUp', alert: { message: 'Please Supply Valid Information' } };
         res.render('index', templateObject);
       }
     }).catch((err) => {
