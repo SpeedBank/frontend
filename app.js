@@ -34,16 +34,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/home', (req, res) => {
-  if (req.cookies.userInfo) {
-    return res.render('home', { title: 'Home', view: 'Login', alert: null });
-  }
-  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
-});
-
 app.get('/', (req, res) => {
   if (req.authenticated) {
-    return res.render('dashboard', { title: 'Dashboard', view: 'Login', alert: null, user: {} });
+    return res.render('dashboard', { title: 'Dashboard', view: 'Dashboard', alert: null, user: {} });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
 });
@@ -57,7 +50,14 @@ app.get('/location', (req, res) => {
 
 app.get('/request', (req, res) => {
   if (req.cookies.userInfo) {
-    res.render('request', { title: 'Request Page', alert: null, view: 'Login', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+    res.render('request', { title: 'Request Page', alert: null, view: 'Request', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+});
+
+app.get('/accountsummary', (req, res) => {
+  if (req.cookies.userInfo) {
+    res.render('accountSummary', { title: 'Account Summary Page', alert: null, view: 'AccountSummary', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
 });
@@ -66,7 +66,7 @@ app.get('/account', (req, res) => {
   if (!req.cookies.userInfo) {
     return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
-  res.render('account', { title: 'Account Page', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
+  res.render('account', { title: 'Account Page', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Account' });
 });
 
 app.post('/review', urlencodedParser, (req, res) => {
@@ -134,9 +134,9 @@ app.get('/new_account', (req, res) => {
   }
   authenticationService.pwcAuthenticate(req, res).then((status) => {
     if (status === 'success') {
-      res.render('account', { title: 'New Bank Account', alert: null, user: { } });
+      res.render('account', { title: 'New Bank Account', alert: null, user: { }, view: 'Account' });
     } else {
-      res.render('account', { title: 'New Bank Account', alert: { message: 'An Error occured, please try again later' } });
+      res.render('account', { title: 'New Bank Account', alert: { message: 'An Error occured, please try again later' }, view: 'Account' });
     }
   }).catch((err) => {
     console.log(err);
@@ -150,13 +150,13 @@ app.post('/signup', urlencodedParser, (req, res) => {
       console.log('Sign Up details', signUpResponse.data.data.createUser.user);
       if (signUpResponse.data.data.createUser.user) {
         res.cookie('userInfo', signUpResponse.data.data.createUser.user);
-        res.render('home', { title: 'Home Page', alert: 'SignUp Succesful' });
+        res.render('dashboard', { title: 'Home Page', alert: 'SignUp Succesful', view: 'Home', user: {} });
       } else {
         const templateObject = { title: 'Sign Up Page', error: 'Please enter your details correctly', view: 'SignUp', alert: { message: 'Please Supply Valid Information' } };
         res.render('index', templateObject);
       }
     }).catch((err) => {
-      console.log('Error', err)
+      console.log('Error', err);
     });
 });
 // error handler
