@@ -61,10 +61,6 @@ function validateAccountOpening(localData) {
     });
 }
 
-// createBankAccount();
-validateAccountOpening({ otp: '12345', trxref: 'FLW-00540978' });
-// requestSmsOtp();
-
 module.exports = {
   createBankAccount,
   validateAccountOpening,

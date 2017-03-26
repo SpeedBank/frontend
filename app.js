@@ -8,7 +8,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const authenticationService = require('./services/authentication_service');
 const q = require('q');
 const accountCreationService = require('./services/accountCreationService');
-var customerServiceReview = require('./services/customerServiceReview');
+const customerServiceReview = require('./services/customerServiceReview');
 
 var app = express();
 
@@ -43,7 +43,7 @@ app.get('/home', (req, res) => {
 
 app.get('/', (req, res) => {
   if (req.authenticated) {
-    return res.render('dashboard', { title: 'Dashboard' });
+    return res.render('dashboard', { title: 'Dashboard', view: 'Login', alert: null, user: {} });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
 });
@@ -57,16 +57,16 @@ app.get('/location', (req, res) => {
 
 app.get('/request', (req, res) => {
   if (req.cookies.userInfo) {
-    res.render('request', { title: 'Request Page' });
+    res.render('request', { title: 'Request Page', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
-  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
 });
 
 app.get('/account', (req, res) => {
   if (!req.cookies.userInfo) {
-    return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
+    return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
-  res.render('account', { title: 'Account Page', alert: null, user: {} });
+  res.render('account', { title: 'Account Page', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
 });
 
 app.post('/review', urlencodedParser, (req, res) => {
@@ -79,7 +79,7 @@ app.post('/review', urlencodedParser, (req, res) => {
 
 app.get('/review', (req, res) => {
   if (!req.authenticated) {
-    return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: {} });
+    return res.render('index', { title: 'Login Page', view: 'Login', alert: null, user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 } });
   }
   res.render('review', { title: 'Review Page', user: {}, alert: null });
 });
