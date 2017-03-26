@@ -25,8 +25,9 @@ app.use(function (req, res, next) {
   req.authenticated = true;
   if (!req.cookies.userInfo) {
     req.authenticated = false;
-  } else if (req.originalUrl === '/login' && req.cookies.userInfo) {
-    res.redirect('/home');
+    if (req.originalUrl !== '/' && req.method == 'GET') {
+      res.redirect('/');
+    }
   }
   next();
 });
@@ -39,6 +40,9 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+  if (req.authenticated) {
+    return res.render('home', { title: 'Home' });
+  }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
@@ -76,6 +80,7 @@ app.get('/review', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
+  console.log(req.cookies('userInfo'));
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
