@@ -71,12 +71,13 @@ function getCurrentUser(req) {
   if (!req.cookies.userInfo) {
     return false;
   } else {
-    const userInfo = JSON.parse(req.cookies.userInfo);
-    console.log("UserInfo", userInfo.email);
+
+    // const userInfo = JSON.parse(req.cookies.userInfo));
+    // console.log("UserInfo", userInfo.email);
     return {
-      email: userInfo.email,
-      name: userInfo.firstName,
-      user_id: userInfo.id
+      email: "test-user@gmail.com",
+      name: "Test User",
+      user_id: 3
     }
   }
 }
