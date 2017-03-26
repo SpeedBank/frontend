@@ -17,9 +17,11 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" onclick="introJs().start();" class="dropdown-toggle">Start Tour</a>
                 </li>
-                <li class="dropdown">
-                    <a href="#" data-intro="This is where you get all your menu options" class="dropdown-toggle menu-link" data-toggle="modal" data-target="#myModalFullscreen" contenteditable="false">What Would you like to do? <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
-                </li>
+                <% if(view !== "Login"){ %>
+                    <li class="dropdown">
+                        <a href="#" data-intro="This is where you get all your menu options" class="dropdown-toggle menu-link" data-toggle="modal" data-target="#myModalFullscreen" contenteditable="false">What Would you like to do? <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                    </li>
+                <% } %>
             </ul>
         </div>
     </div>
