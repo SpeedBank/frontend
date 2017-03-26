@@ -705,6 +705,11 @@ footer span.copyright {
   display: none;
 }
 
+.nav > li.content-hidden,
+a.content-hidden {
+  display: none;
+}
+
 .form {
   margin-top: 40px;
 }
@@ -733,7 +738,7 @@ footer span.copyright {
 }
 
 .widget {
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   right: 10px;
   width: 500px;
