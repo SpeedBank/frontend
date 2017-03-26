@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include partials/head %>
+
+    <body id="page-top" class="bg-gray">
+
+        <% include partials/header %>
+
+        <div class="container page-content">
+            <div class="row">
+              <div class="col-sm-3 text-center">
+                <% include partials/sidebar %>
+              </div>
+              <div class="col-md-9 col-xs-12">
+                <div class="content pad-content-top">
+                    <legend>Past Inquiries.</legend>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Inquiry ID</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>John</td>
+                            <td>Doe</td>
+                            <td>john@example.com</td>
+                            <td class="request-success">Successful</td>
+                        </tr>
+                        <tr>
+                            <td>Mary</td>
+                            <td>Moe</td>
+                            <td>mary@example.com</td>
+                            <td class="request-pending">Pending</td>
+                        </tr>
+                        <tr>
+                            <td>john@example.com</td>
+                            <td>mary@example.com</td>
+                            <td>Successful</td>
+                            <td class="request-failed">Failed</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <% include partials/footer %>
+
+    </body>
+</html>

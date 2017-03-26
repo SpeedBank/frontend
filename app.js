@@ -48,6 +48,10 @@ app.get('/account', (req, res) => {
   res.render('account', { title: 'Create Account' });
 });
 
+app.get('/inquiries', (req, res) => {
+  res.render('inquiries', { title: 'Your Enquiries' });
+});
+
 app.get('/review', (req, res) => {
   res.render('review', { title: 'Review Page' });
 });

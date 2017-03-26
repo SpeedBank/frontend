@@ -14,7 +14,7 @@ var tour;
     offset: 51
   });
 
-  $('.navbar-collapse ul li a').click(function () { 
+  $('.navbar-collapse ul li a').click(function () {
     $('.navbar-toggle:visible').click();
   });
 
@@ -33,31 +33,28 @@ var tour;
     event.preventDefault();
   });
 
-  $(document).on('click', '.btn-group.btn-group-justified .btn', function (event) {
+  $(document).on('click', '.btn-group.btn-group-justified .btn', function () {
     $('#rating-btn').val($(this).text());
     $('.btn-group.btn-group-justified .btn').removeClass('active');
-    $(this).toggleClass('active');
+    $(this).addClass('active');
   });
 
-  tour = new Tour({
-    steps: [
-      {
-        element: '.navbar-custom',
-        title: 'Здравствуйте',
-        content: 'Добро пожаловать в виртуальный тур.'
-      },
-      {
-        element: '.panel-heading',
-        title: 'Это ссылка',
-        content: 'Если нажать на эту ссылку - ничего не произойдет.'
-      }
-    ],
-    backdrop: true,
-    storage: false
+  $('.sidebar .list-group-item').each(function () {
+    var path = window.location.pathname;
+    if ($(this).attr('href') === path) {
+      $(this).addClass('active');
+    }
   });
 
-  tour.init();
-  tour.start();
+  $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $('.modal.modal-fullscreen .modal-body a').hover(function () {
+      $(this).stop().animate({ opacity: 1 }, 200);
+    },
+    function () {
+      $(this).stop().animate({ opacity: 0.5 }, 200);
+    });
+  });
 
 })(jQuery);
 
