@@ -1,5 +1,5 @@
 const payWithCaptureAuth = require('./pwcAuthenticationService');
-let q = require('Q');
+let q = require('q');
 const axios = require('axios');
 const url = require('../config/external-services').speedBankUrl;
 const graphqlUrl = require('../config/external-services').speedBankGraphUrl;
@@ -61,16 +61,30 @@ function signUp(req) {
 }
 
 function isLoggedIn(req) {
-  console.log('Auth Cookie', req.cookies.use);
   if (!req.cookies.userInfo) {
     return false;
   }
   return true;
 }
 
+function getCurrentUser(req) {
+  if (!req.cookies.userInfo) {
+    return false;
+  } else {
+    const userInfo = JSON.parse(req.cookies.userInfo));
+    console.log("UserInfo", userInfo.email);
+    return {
+      email: userInfo.email,
+      name: userInfo.firstName,
+      user_id: userInfo.id
+    }
+  }
+}
+
 module.exports = {
   pwcAuthenticate,
   login,
   signUp,
-  isLoggedIn
+  isLoggedIn,
+  getCurrentUser
 };
