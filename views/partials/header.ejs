@@ -14,8 +14,11 @@
         
         <div class="collapse navbar-collapse js-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown mega-dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModalFullscreen" contenteditable="false">What Would you like to do? <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" onclick="introJs().start();" class="dropdown-toggle">Start Tour</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-intro="This is where you get all your menu options" class="dropdown-toggle menu-link" data-toggle="modal" data-target="#myModalFullscreen" contenteditable="false">What Would you like to do? <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
                 </li>
             </ul>
         </div>
@@ -31,24 +34,24 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2 col-xs-12">
-                        <div class="col-md-3 col-xs-12">
-                            <a class="blue" href="/" data-toggle="tooltip" data-placement="bottom" title="Go back to your dashboard to what you've been up to.">Home</a>
+                    <div class="col-md-6 col-md-offset-3 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
+                            <a class="blue-inverse" href="/" data-toggle="tooltip" data-placement="bottom" title="Go back to your dashboard to what you've been up to.">Home</a>
                         </div>
-                        <div class="col-md-3 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
                             <a class="blue-inverse" href="/review" data-toggle="tooltip" data-placement="bottom" title="To improve our service, post your reviews after you visit any of our branches.">Review</a>
                         </div>
-                        <div class="col-md-3 col-xs-12">
-                            <a class="blue" href="/request" data-toggle="tooltip" data-placement="bottom" title="Request any order from the bank from ATM cards to account summary">Request</a>
+                        <div class="col-md-4 col-xs-12">
+                            <a class="blue-inverse" href="/request" data-toggle="tooltip" data-placement="bottom" title="Request any order from the bank from ATM cards to account summary">Request</a>
                         </div>
-                        <div class="col-md-3 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
                             <a class="blue-inverse" href="/location" data-toggle="tooltip" data-placement="bottom" title="Find the nearest banks near you.">Locations</a>
                         </div>
-                        <div class="col-md-3 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
                             <a class="blue-inverse" href="/review" data-toggle="tooltip" data-placement="bottom" title="Create an account on the go without stress!">Accounts</a>
                         </div>
-                        <div class="col-md-3 col-xs-12">
-                            <a class="blue" href="/review" data-toggle="tooltip" data-placement="bottom" title="Hooray!">Review</a>
+                        <div class="col-md-4 col-xs-12">
+                            <a class="blue-inverse" href="/review" data-toggle="tooltip" data-placement="bottom" title="Hooray!">Review</a>
                         </div>
                     </div>
                 </div>

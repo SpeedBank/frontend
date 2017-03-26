@@ -442,9 +442,13 @@ h1, h2, h3, h4, h5, h6 {
   border-top-right-radius: 4px;
 }
 
+.navbar-default .navbar-nav>li>a.menu-link {
+  width: 290px;
+}
+
 .navbar-default .navbar-nav>li>a {
-  width: 300px;
-  font-weight: bold;
+  font-size: 16px;
+  text-transform: capitalize;
 }
 
 /*modal fullscreen */
@@ -482,6 +486,7 @@ h1, h2, h3, h4, h5, h6 {
 .modal.modal-fullscreen .modal-header {
   border-bottom: none;
   margin: 30px;
+  margin-bottom: 70px;
 }
 
 .modal.modal-fullscreen .modal-title {
@@ -507,7 +512,6 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 24px;
   text-align: center;
   float: left;
-  opacity: 0.5;
   text-decoration: none;
 }
 
@@ -528,15 +532,37 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 5px solid #1b96fe;
 }
 
-.blue {
-  background: #1b96fe;
-  color: #fff;  
-}
-
 .blue-inverse {
   background: #fff;
   border: 2px solid #1b96fe;
   color: #1b96fe;
+}
+
+/* dashboard */
+
+.dashboard .content {
+  height: 250px;
+  box-shadow: 10px 17.321px 57px 0px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 10px 17.321px 57px 0px rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 10px 17.321px 57px 0px rgba(0, 0, 0, 0.08);
+  -o-box-shadow: 10px 17.321px 57px 0px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard .content:hover,
+.dashboard .content:focus {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
+}
+
+a.dashboard-link {
+  width: 100%;
+  line-height: 220px;
+  display: block;
+  font-size: 24px;
+  text-align: center;
+  text-decoration: none;
 }
 
 div.hero {
@@ -707,7 +733,7 @@ footer span.copyright {
 }
 
 .widget {
-  position: fixed;
+  position: absolute;
   bottom: 10px;
   right: 10px;
   width: 500px;
