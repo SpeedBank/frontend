@@ -103,16 +103,18 @@ let observer;
   }
 
   function makeInquiry(query) {
+    debugger;
     var promise = new Promise (function (resolve, reject) {
-      app.post(`mutation{createInquiry(input:{data:{question:${query}, bankId:1}}){inquiry{question,id,originalId}}}`, function (result) {
+      app.post(`mutation{createInquiry(input:{data:{question:"${query}", bankId:1}}){inquiry{question,id,originalId}}}`, function (result) {
         resolve(result.data.createInquiry.inquiry);
       });
     });
 
-    promise.then(function (response) {
-      resetActiveQueryInStorage();
-      injectNewResponsesIntoChat('Your query has been taken. Our customer representative will get in touch with you');
-    });
+    promise
+      .then(function (response) {
+        resetActiveQueryInStorage();
+        injectNewResponsesIntoChat('Your query has been taken. Our customer representative will get in touch with you');
+      })
   }
 
   function getFaqs(query) {
@@ -151,7 +153,7 @@ let observer;
     const query = document.getElementById('btn-input').value;
     injectUsersChat(query);
     if (query.toLowerCase() === 'yes' && localStorage.getItem(ACTIVECHAT)) {
-      return makeInquiry(localStorage.getItem(LASTQUERY));
+      return makeInquiry(localStorage.getItem(LASTQUERY)).;
     }
     // const remoteMessages = ['We create accounts', 'We take card', 'I can help'];
     const remoteMessages = getFaqs(query);
