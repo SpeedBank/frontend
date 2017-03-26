@@ -22,22 +22,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
   // Redirect Home if already logged in
-  if (req.originalUrl === '/login' && req.cookies.userInfo) {
+  req.authenticated = true;
+  if (!req.cookies.userInfo) {
+    req.authenticated = false;
+  } else if (req.originalUrl === '/login' && req.cookies.userInfo) {
     res.redirect('/home');
   }
   next();
 });
 
 app.get('/home', (req, res) => {
-  authenticationService.pwcAuthenticate(req, res).then((status) => {
-    if (status === 'success') {
-      res.render('home', { title: 'Home' });
-    } else if (status === 'unauthenticated') {
-      res.send('Not authenticated');
-    } else {
-      res.render('error', { title: 'Error' });
-    }
-  });
+  if (req.authenticated) {
+    return res.render('home', { title: 'Home' });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/', (req, res) => {
@@ -45,15 +43,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/location', (req, res) => {
-  res.render('location', { title: 'Location Page' });
+  if (req.authenticated) {
+    return res.render('location', { title: 'Location Page' });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/request', (req, res) => {
-  res.render('request', { title: 'Request Page' });
+  if (req.authenticated) {
+    res.render('request', { title: 'Request Page' });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/account', (req, res) => {
-  res.render('account', { title: 'Create Account' });
+  if (req.authenticated) {
+    authenticationService.pwcAuthenticate(req, res).then((status) => {
+      if (status === 'success') {
+        return res.redirect('/account');
+      } else {
+        return res.render('account', { title: 'Account', alert: { message: 'An Error occured, please try again later' } });
+      }
+    });
+    return res.render('account', { title: 'Create Account' });
+  }
+  res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
 
 app.get('/inquiries', (req, res) => {
@@ -78,7 +92,7 @@ app.post('/login', urlencodedParser, (req, res) => {
       if (userInfo === 'loggedIn') {
         res.redirect('/home');
       } else if (userInfo && userInfo.data) {
-        res.cookie('userInfo', userInfo.data);
+        res.cookie('userInfo', JSON.stringify(userInfo.data));
         res.redirect('/home');
       }
     }).catch((err) => {
@@ -89,8 +103,18 @@ app.post('/login', urlencodedParser, (req, res) => {
 });
 
 app.get('/new_account', (req, res) => {
-
-  res.render('account', { title: 'Create New Account' });
+  if (!authenticationService.isLoggedIn(req)) {
+    res.render('index', { title: 'SignIn Page', view: 'SignIn', alert: null });
+  }
+  authenticationService.pwcAuthenticate(req, res).then((status) => {
+    if (status === 'success') {
+      res.render('account');
+    } else {
+      res.render('account', { title: 'New Bank Account', alert: { message: 'An Error occured, please try again later' } });
+    }
+  }).catch((err) => {
+    res.render('account', err)
+  })
 });
 
 

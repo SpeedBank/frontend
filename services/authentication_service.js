@@ -8,11 +8,12 @@ function pwcAuthenticate(req, res) {
   var deferred = q.defer();
   if (!req.cookies.pwc_token) {
     payWithCaptureAuth.authenticate().then((pwcResponse) => {
+      console.log('Made request', pwcResponse.data);
       res.cookie('pwc_token', pwcResponse.data.access_token);
       deferred.resolve('success');
     })
     .catch((errResponse) => {
-      deferred.reject('error');
+      deferred.reject(errResponse);
     });
   } else {
     deferred.resolve('success');
@@ -36,7 +37,7 @@ function login(req) {
 }
 
 function signUp (req) {
-  mutationString = `
+  const mutationString = `
     mutation {
       createUser(input: {
         userData: {
@@ -55,13 +56,21 @@ function signUp (req) {
     }
   `
   const mutationQuery = encodeURIComponent(mutationString);
-  const url = `${graphqlUrl}${mutationQuery}`;
-  console.log('Query url', url);
-  return axios.post(url);
+  const urlQuery = `${graphqlUrl}${mutationQuery}`;
+  return axios.post(urlQuery);
+}
+
+function isLoggedIn(req) {
+  console.log('Auth Cookie', req.cookies.use);
+  if (!req.cookies.userInfo) {
+    return false;
+  }
+  return true;
 }
 
 module.exports = {
   pwcAuthenticate,
   login,
-  signUp
+  signUp,
+  isLoggedIn
 };
