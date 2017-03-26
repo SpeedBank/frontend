@@ -1,8 +1,9 @@
 var app = {
     apiUrl: 'https://speedbank.herokuapp.com/api?query=',
+    orderType: [],
     post: function post(query, success){
       $.ajax({
-         url: app.apiUrl + query,
+         url: app.apiUrl + encodeURIComponent(query),
          type: "POST",
          beforeSend: function(xhr){ xhr.setRequestHeader('TOKEN', app.getToken())},
          success: success
@@ -54,7 +55,7 @@ var app = {
     },
     getBranches:function () {
         return new Promise(function(resolve, reject) {
-              app.post("query{branches{edges{node{id,originalId,name,,address,city,state,country,latitude,longitude,bank{name}}}}}", function (result) {
+              app.post("query{branches{edges{node{id,originalId,name,address,city,state,country,latitude,longitude,bank{name}}}}}", function (result) {
                 resolve(result.data.branches.edges);
               });
           });
