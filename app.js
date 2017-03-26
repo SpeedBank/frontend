@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 
 app.get('/location', (req, res) => {
   if (req.cookies.userInfo) {
-    return res.render('location', { title: 'Location Page', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Location' });
+    return res.render('map', { title: 'Location Page', user: { email: 'dsds@yahoo.com', name: 'Charles', user_id: 1 }, view: 'Location' });
   }
   res.render('index', { title: 'Login Page', view: 'Login', alert: null });
 });
