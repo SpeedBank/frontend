@@ -1,5 +1,3 @@
-var tour;
-
 (function ($) {
   $('a.page-scroll').bind('click', function (event) {
     var $anchor = $(this);
@@ -55,6 +53,6 @@ var tour;
       $(this).stop().animate({ opacity: 0.5 }, 200);
     });
   });
-
+    
 })(jQuery);
 

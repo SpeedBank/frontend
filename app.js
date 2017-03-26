@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/location', (req, res) => {
-  res.render('location', { title: 'Location Page' });
+  res.render('map', { title: 'Location Page' });
 });
 
 app.get('/request', (req, res) => {

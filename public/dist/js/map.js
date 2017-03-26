@@ -1,40 +1,56 @@
-(function ($) {
-  function initMap() {
-    var location = new google.maps.LatLng(50.0875726, 14.4189987);
-
-    var mapCanvas = document.getElementById('map');
-    var mapOptions = {
-      center: location,
-      zoom: 16,
-      panControl: false,
+function initialize(branches) {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(branches[0].node.latitude, branches[0].node.longitude),
       mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(mapCanvas, mapOptions);
-
-    var markerImage = 'marker.png';
-
-    var marker = new google.maps.Marker({
-      position: location,
-      map: map,
-      icon: markerImage
     });
+    var infowindow = new google.maps.InfoWindow();
+    var marker;
+    for (var i = 0; i < branches.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(branches[i].node.latitude, branches[i].node.longitude),
+        map: map
+      });
 
-    var contentString = '<div class="info-window">' +
-            '<h3>Info Window Content</h3>' +
-            '<div class="info-content">' +
-            '<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>' +
-            '</div>' +
-            '</div>';
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          var content = `
+            <div class="siteNotice">
+                <h1 class="firstHeading">${branches[i].node.name}</h1>
+                <div class="bodyContent">
+                    <table class="table table-striped table-responsive">
+                        <tr>
+                        <th>Phone</th>
+                        <td>${branches[i].node.phone}</td>
+                        </tr>
+                        <tr>
+                        <th>Email</th>
+                        <td>${branches[i].node.email}</td>
+                        </tr>
+                        <tr>
+                        <th>Address</th>
+                        <td>${branches[i].node.address} ${branches[i].node.city} ${branches[i].node.state} ${branches[i].node.country}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+          `;
+          infowindow.setContent(content);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+}
 
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString,
-      maxWidth: 400
-    });
+function loadBranches(){
+  var promise = new Promise(function(resolve, reject) {
+      app.post("query{branches{edges{node{name,address,city,state,country,phone,email,latitude,longitude}}}}", function (result) {
+        resolve(result.data.branches.edges)
+      });
+  });
 
-    marker.addListener('click', function () {
-      infowindow.open(map, marker);
-    });
-  }
+  promise.then(function (branches) {
+    initialize(branches);
+  });
 
-  google.maps.event.addDomListener(window, 'load', initMap);
-})(jQuery);
+}
