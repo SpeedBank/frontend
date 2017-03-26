@@ -13,19 +13,19 @@ function authenticate() {
     grant_type: 'client_credentials',
   };
   config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-  axios.post('https://pwcstaging.herokuapp.com/oauth/token', querystring.stringify(data), config)
-    .then((response) => {
-        if (response.status == 200) {
-          const result = Object.assign({}, response.data);
-          expireTime = getExpireTime(response.data.expires_in);
-          result.expireTime = expireTime;
-          console.log(result);
-          return result;
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+  return axios.post('https://pwcstaging.herokuapp.com/oauth/token', querystring.stringify(data), config);
+    // .then((response) => {
+    //     if (response.status == 200) {
+    //       const result = Object.assign({}, response.data);
+    //       expireTime = getExpireTime(response.data.expires_in);
+    //       result.expireTime = expireTime;
+    //       console.log(result);
+    //       return result;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   })
 }
 
 function getExpireTime(expiresIn) {
