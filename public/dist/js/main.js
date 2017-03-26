@@ -1,4 +1,3 @@
-
 const ACTIVECHAT = 'activeChat';
 const LASTQUERY = 'lastQuery';
 const CHAT_API_ERROR_MESSAGE = 'Something went wrong, Please try again!';
